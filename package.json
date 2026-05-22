@@ -1,0 +1,8 @@
+{
+  "name": "n8n-workshop",
+  "version": "1.0.0",
+  "description": "n8n Automation Workshop site with Google Sheets integration",
+  "dependencies": {
+    "googleapis": "^140.0.0"
+  }
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Quiz — n8n Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.quiz-shell{max-width:660px;margin:48px auto 0}
+.q-prog{display:flex;gap:6px;margin-bottom:28px}
+.qpd{height:4px;flex:1;border-radius:2px;background:var(--border);transition:background .35s}
+.qpd.done{background:var(--teal)}.qpd.cur{background:var(--amber)}
+
+.q-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:36px;box-shadow:0 3px 16px var(--shadow)}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.q-num-badge{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3)}
+.q-score-live{font-size:12px;font-weight:600;color:var(--teal);background:var(--tealL);padding:4px 10px;border-radius:100px}
+.q-text{font-family:'Lora',serif;font-size:20px;font-weight:500;line-height:1.45;color:var(--ink);margin-bottom:26px}
+
+.q-opts{display:flex;flex-direction:column;gap:10px}
+.q-opt{
+  display:flex;align-items:center;gap:14px;
+  background:var(--paper);border:1.5px solid var(--border);border-radius:12px;
+  padding:14px 18px;cursor:pointer;transition:all .18s;
+  font-size:14px;font-weight:500;color:var(--ink2);
+}
+.q-opt:hover{border-color:var(--teal);background:var(--tealL);color:var(--tealD)}
+.q-opt.selected{border-color:var(--amber);background:var(--amberL);color:#78350F;pointer-events:none}
+.q-opt.correct{border-color:var(--teal);background:var(--tealL);color:var(--tealD);pointer-events:none}
+.q-opt.wrong{border-color:#EF4444;background:#FEF2F2;color:#991B1B;pointer-events:none}
+.q-opt-letter{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:all .18s;color:var(--ink3)}
+.q-opt:hover .q-opt-letter{border-color:var(--teal);color:var(--tealD)}
+.q-opt.correct .q-opt-letter{border-color:var(--teal);background:var(--teal);color:#fff}
+.q-opt.wrong .q-opt-letter{border-color:#EF4444;background:#EF4444;color:#fff}
+
+.explain-box{margin-top:18px;padding:14px 16px;background:var(--paper);border-left:3px solid var(--teal);border-radius:0 10px 10px 0;font-family:'Lora',serif;font-style:italic;font-size:14px;color:var(--ink2);line-height:1.6;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.next-btn{margin-top:18px;width:100%;background:var(--teal);color:#fff;font-family:'Nunito',sans-serif;font-weight:600;font-size:15px;padding:13px;border-radius:100px;border:none;cursor:pointer;transition:all .2s;display:none}
+.next-btn:hover{background:var(--tealD)}
+.next-btn.show{display:block}
+
+/* result */
+.q-result{text-align:center;padding:12px 0}
+.qr-emoji{font-size:52px;margin-bottom:12px}
+.qr-score{font-family:'Lora',serif;font-size:60px;font-weight:600;color:var(--teal);line-height:1}
+.qr-label{font-size:18px;font-weight:600;color:var(--ink);margin:8px 0 6px}
+.qr-sub{font-size:14px;color:var(--ink3);margin-bottom:20px}
+.qr-msg{font-family:'Lora',serif;font-style:italic;font-size:15px;color:var(--ink2);background:var(--paper);border-left:3px solid var(--teal);padding:14px 16px;border-radius:0 10px 10px 0;text-align:left;line-height:1.65;margin-bottom:24px}
+.qr-note{font-size:13px;color:var(--ink3);margin-bottom:24px;font-style:italic}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand"><span class="brand-pill">n8n</span><span class="brand-name">Automation Workshop</span></a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-a">Home</a>
+    <a href="automation.html" class="nav-a">Automation</a>
+    <a href="n8n.html" class="nav-a">n8n</a>
+    <a href="workflows.html" class="nav-a">Workflows</a>
+    <a href="quiz.html" class="nav-a">Quiz</a>
+    <a href="ideas.html" class="nav-a">Ideas</a>
+    <a href="https://n8n.io" target="_blank" class="nav-cta">Open n8n →</a>
+  </div>
+</nav>
+
+<div class="page-banner">
+  <div class="eyebrow">Test yourself</div>
+  <h1>How well do you know <em>n8n?</em></h1>
+  <p>Six questions on automation and n8n. Pick an answer — see if you're right, read the explanation, then move to the next one.</p>
+</div>
+
+<section>
+  <div class="container">
+    <div class="quiz-shell">
+      <div class="q-prog" id="qprog"></div>
+      <div class="q-card" id="qcard"></div>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <div><span class="pn-label">Previous</span><a href="workflows.html">← Real workflows</a></div>
+  <div style="text-align:right"><span class="pn-label">Next</span><a href="ideas.html">Wall of Ideas →</a></div>
+</div>
+<footer><p>n8n Automation Workshop</p><a href="https://n8n.io" target="_blank">n8n.io →</a></footer>
+<script src="../js/nav.js"></script>
+<script>
+const Qs = [
+  {
+    q:"In n8n, what does a Trigger node do?",
+    opts:["It sends emails and messages to users","It starts the workflow when a specific event happens","It stores data in Google Sheets","It filters which data passes through the workflow"],
+    correct:1,
+    explain:"A Trigger node listens for an event — a new email, a form submission, a scheduled time. When that event fires, n8n wakes up and runs the entire workflow automatically."
+  },
+  {
+    q:"You want to run a workflow every day at 8am without anyone pressing anything. Which trigger node do you use?",
+    opts:["Webhook node","Gmail Trigger node","Schedule Trigger node","IF node"],
+    correct:2,
+    explain:"The Schedule Trigger runs your workflow at a fixed time — every hour, every day, every Monday at 9am. It wakes up on its own, no human needed."
+  },
+  {
+    q:"What does the IF node do in an n8n workflow?",
+    opts:["Creates a public URL to receive data from external apps","Sends two emails simultaneously","Routes data down different paths based on a condition (like IF/ELSE)","Loops through every row in a spreadsheet"],
+    correct:2,
+    explain:"The IF node checks a condition — like 'is the score greater than 80?' — and sends your data down different branches depending on the answer. True goes one way, false goes another."
+  },
+  {
+    q:"In the workflow: Form Submit → Sheets → Gmail — which part is the Action?",
+    opts:["Form Submit — it starts everything","Sheets and Gmail — they perform the actual tasks","The connection lines between nodes","The n8n canvas itself"],
+    correct:1,
+    explain:"Action nodes perform the work — writing to Sheets and sending via Gmail. The Form Submit is the Trigger. The canvas and connections are just the structure, not a node type."
+  },
+  {
+    q:"What is a Webhook in n8n?",
+    opts:["A scheduled time that runs the workflow daily","A special Gmail filter that starts n8n","A unique URL that receives data from an external app or website","A node that loops through a list of items one by one"],
+    correct:2,
+    explain:"A Webhook gives you a unique URL. When another app sends data to that URL — like a form submission — n8n catches it instantly and runs the workflow. It's how n8n listens to the outside world."
+  },
+  {
+    q:"You want to send one of three different emails based on whether a student scored 0–2, 3–4, or 5 on a quiz. Which logic node is best?",
+    opts:["IF node — it handles two paths: true or false","Filter node — it removes data that doesn't match","Set node — it reformats the score as text","Switch node — it routes data down multiple branches based on a value"],
+    correct:3,
+    explain:"The Switch node is IF with more than two outputs. You define multiple conditions (0–2, 3–4, 5) and it routes each score to a different branch — each with its own personalised Gmail node."
+  }
+];
+
+let qi=0, sc=0;
+
+function buildProg(){
+  const p=document.getElementById('qprog');
+  p.innerHTML='';
+  Qs.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='qpd'+(i<qi?' done':i===qi?' cur':'');
+    p.appendChild(d);
+  });
+}
+
+function renderQ(){
+  buildProg();
+  const q=Qs[qi];
+  document.getElementById('qcard').innerHTML=`
+    <div class="q-top">
+      <span class="q-num-badge">Question ${qi+1} of ${Qs.length}</span>
+      <span class="q-score-live">${sc} correct so far</span>
+    </div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-opts" id="qopts">
+      ${q.opts.map((o,i)=>`
+        <div class="q-opt" id="opt${i}" onclick="pick(${i})">
+          <span class="q-opt-letter">${String.fromCharCode(65+i)}</span>
+          ${o}
+        </div>`).join('')}
+    </div>
+    <div id="explain-slot"></div>
+    <button class="next-btn" id="nextbtn" onclick="advance()">
+      ${qi<Qs.length-1?'Next question →':'See my score →'}
+    </button>`;
+}
+
+function pick(chosen){
+  const q=Qs[qi];
+  // lock all
+  document.querySelectorAll('.q-opt').forEach(o=>o.style.pointerEvents='none');
+  // mark correct
+  document.getElementById('opt'+q.correct).classList.add('correct');
+  // mark wrong if chosen wrong
+  if(chosen!==q.correct) document.getElementById('opt'+chosen).classList.add('wrong');
+  else sc++;
+  // show explanation
+  document.getElementById('explain-slot').innerHTML=`<div class="explain-box">${q.explain}</div>`;
+  // show next button
+  document.getElementById('nextbtn').classList.add('show');
+}
+
+function advance(){
+  qi++;
+  if(qi<Qs.length){
+    renderQ();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+  buildProg();
+  const pct=Math.round(sc/Qs.length*100);
+  const tiers=[
+    {emoji:'📚',label:'Keep exploring!',msg:'Go back through the pages — every answer is there. The concepts click faster the second time around.'},
+    {emoji:'💡',label:'Good start!',msg:'You picked up the basics. Review the node types section on the n8n page and try again.'},
+    {emoji:'⚡',label:'Getting there!',msg:'Solid understanding. One more read-through of the automation flow and you\'ll be building confidently.'},
+    {emoji:'🎯',label:'Nice work!',msg:'You understand how n8n works. You\'re ready to open n8n and build your first real workflow today.'},
+    {emoji:'🔥',label:'Great score!',msg:'Sharp! You clearly paid attention. Time to open n8n and build something real.'},
+    {emoji:'🏆',label:'n8n expert!',msg:'Perfect score. You\'ve got the full picture — trigger, logic, action. Go build something that saves you hours every week.'}
+  ];
+  const lvl=Math.min(Math.floor(sc/(Qs.length/5)),5);
+  const t=tiers[lvl];
+  document.getElementById('qcard').innerHTML=`
+    <div class="q-result">
+      <div class="qr-emoji">${t.emoji}</div>
+      <div class="qr-score">${sc}/${Qs.length}</div>
+      <div class="qr-label">${t.label}</div>
+      <div class="qr-sub">${pct}% correct</div>
+      <div class="qr-msg">${t.msg}</div>
+      <div class="qr-note">In a real deployment, this score would hit an n8n Switch node and you'd receive a personalised email right now.</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-teal" onclick="restart()">Try again →</button>
+        <a href="ideas.html" class="btn btn-outline">Wall of Ideas →</a>
+      </div>
+    </div>`;
+}
+
+function restart(){qi=0;sc=0;renderQ();}
+renderQ();
+</script>
+</body>
+</html>

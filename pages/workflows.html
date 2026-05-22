@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Real Workflows — n8n Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.wf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px}
+.wf-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);transition:all .22s}
+.wf-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px var(--shadow)}
+.wf-diagram{height:156px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.wf-info{padding:16px 18px}
+.wf-info h4{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.wf-info p{font-size:12px;color:var(--ink3);line-height:1.6}
+@media(max-width:800px){.wf-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.wf-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand"><span class="brand-pill">n8n</span><span class="brand-name">Automation Workshop</span></a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-a">Home</a>
+    <a href="automation.html" class="nav-a">Automation</a>
+    <a href="n8n.html" class="nav-a">n8n</a>
+    <a href="workflows.html" class="nav-a">Workflows</a>
+    <a href="quiz.html" class="nav-a">Quiz</a>
+    <a href="ideas.html" class="nav-a">Ideas</a>
+    <a href="https://n8n.io" target="_blank" class="nav-cta">Open n8n →</a>
+  </div>
+</nav>
+
+<div class="page-banner">
+  <div class="eyebrow">Concept 3</div>
+  <h1>Real <em>workflows</em> you can build</h1>
+  <p>Six student-relevant automations. Each diagram shows the exact nodes and connections — build any of these after today.</p>
+</div>
+
+<section>
+  <div class="container">
+    <div class="section-label">Example workflows</div>
+    <h2 class="section-title">From simple to powerful</h2>
+    <p class="section-sub">Read left to right — Trigger → Logic (optional) → Action(s). These are all real n8n workflows you can import and customise.</p>
+
+    <div class="wf-grid">
+
+      <!-- 1: Form → Sheets → Gmail -->
+      <div class="wf-card">
+        <div class="wf-diagram" style="background:#F0FDF9">
+          <svg viewBox="0 0 300 120" width="286" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="w1" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></marker></defs>
+            <rect x="8" y="38" width="82" height="44" rx="8" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.4"/>
+            <text x="49" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#0F766E" font-family="Nunito,sans-serif">TRIGGER</text>
+            <text x="49" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#134E4A" font-family="Nunito,sans-serif">Webhook</text>
+            <text x="49" y="79" text-anchor="middle" font-size="8" fill="#0F766E" font-family="Nunito,sans-serif">Form submit</text>
+            <line x1="90" y1="60" x2="110" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w1)"/>
+            <rect x="112" y="38" width="82" height="44" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.4"/>
+            <text x="153" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#5B21B6" font-family="Nunito,sans-serif">ACTION</text>
+            <text x="153" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#3B0764" font-family="Nunito,sans-serif">Google Sheets</text>
+            <text x="153" y="79" text-anchor="middle" font-size="8" fill="#5B21B6" font-family="Nunito,sans-serif">Append row</text>
+            <line x1="194" y1="60" x2="214" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w1)"/>
+            <rect x="216" y="38" width="76" height="44" rx="8" fill="#FFF1F2" stroke="#BE185D" stroke-width="1.4"/>
+            <text x="254" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#9D174D" font-family="Nunito,sans-serif">ACTION</text>
+            <text x="254" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#831843" font-family="Nunito,sans-serif">Gmail</text>
+            <text x="254" y="79" text-anchor="middle" font-size="8" fill="#9D174D" font-family="Nunito,sans-serif">Send reply</text>
+          </svg>
+        </div>
+        <div class="wf-info">
+          <h4>Form → Sheets → Confirmation email</h4>
+          <p>The live demo workflow. Submit → log → auto-reply in under 1 second. Build this in class today.</p>
+          <span class="badge badge-teal" style="margin-top:10px;display:inline-block">Live demo</span>
+        </div>
+      </div>
+
+      <!-- 2: Quiz → Switch → 3x Gmail -->
+      <div class="wf-card">
+        <div class="wf-diagram" style="background:#FFFBEB">
+          <svg viewBox="0 0 300 120" width="286" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="w2" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></marker></defs>
+            <rect x="8" y="44" width="72" height="36" rx="7" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.4"/>
+            <text x="44" y="59" text-anchor="middle" font-size="8" font-weight="700" fill="#134E4A" font-family="Nunito,sans-serif">Webhook</text>
+            <text x="44" y="71" text-anchor="middle" font-size="7.5" fill="#0F766E" font-family="Nunito,sans-serif">Quiz done</text>
+            <line x1="80" y1="62" x2="100" y2="62" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w2)"/>
+            <rect x="102" y="44" width="72" height="36" rx="7" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+            <text x="138" y="59" text-anchor="middle" font-size="8" font-weight="700" fill="#78350F" font-family="Nunito,sans-serif">Switch</text>
+            <text x="138" y="71" text-anchor="middle" font-size="7.5" fill="#92400E" font-family="Nunito,sans-serif">0–2 / 3–4 / 5</text>
+            <line x1="174" y1="52" x2="202" y2="26" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#w2)"/>
+            <line x1="174" y1="62" x2="202" y2="62" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#w2)"/>
+            <line x1="174" y1="72" x2="202" y2="98" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#w2)"/>
+            <rect x="204" y="14" width="82" height="24" rx="6" fill="#FFF1F2" stroke="#BE185D" stroke-width="1.2"/>
+            <text x="245" y="22" text-anchor="middle" font-size="8" font-weight="700" fill="#831843" font-family="Nunito,sans-serif">Gmail</text>
+            <text x="245" y="33" text-anchor="middle" font-size="7" fill="#9D174D" font-family="Nunito,sans-serif">"Genius!" email</text>
+            <rect x="204" y="50" width="82" height="24" rx="6" fill="#FFF1F2" stroke="#BE185D" stroke-width="1.2"/>
+            <text x="245" y="58" text-anchor="middle" font-size="8" font-weight="700" fill="#831843" font-family="Nunito,sans-serif">Gmail</text>
+            <text x="245" y="69" text-anchor="middle" font-size="7" fill="#9D174D" font-family="Nunito,sans-serif">"Almost!" email</text>
+            <rect x="204" y="86" width="82" height="24" rx="6" fill="#FFF1F2" stroke="#BE185D" stroke-width="1.2"/>
+            <text x="245" y="94" text-anchor="middle" font-size="8" font-weight="700" fill="#831843" font-family="Nunito,sans-serif">Gmail</text>
+            <text x="245" y="105" text-anchor="middle" font-size="7" fill="#9D174D" font-family="Nunito,sans-serif">"Keep going!" email</text>
+          </svg>
+        </div>
+        <div class="wf-info">
+          <h4>Quiz score → Switch → personalised email</h4>
+          <p>Three different emails based on score. One workflow, conditional logic — no manual sending.</p>
+          <span class="badge badge-amber" style="margin-top:10px;display:inline-block">Conditional logic</span>
+        </div>
+      </div>
+
+      <!-- 3: Schedule → Sheets → WhatsApp -->
+      <div class="wf-card">
+        <div class="wf-diagram" style="background:#F0F9FF">
+          <svg viewBox="0 0 300 120" width="286" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="w3" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></marker></defs>
+            <rect x="8" y="38" width="82" height="44" rx="8" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.4"/>
+            <text x="49" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#0F766E" font-family="Nunito,sans-serif">TRIGGER</text>
+            <text x="49" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#134E4A" font-family="Nunito,sans-serif">Schedule</text>
+            <text x="49" y="79" text-anchor="middle" font-size="8" fill="#0F766E" font-family="Nunito,sans-serif">Mon 9am</text>
+            <line x1="90" y1="60" x2="110" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w3)"/>
+            <rect x="112" y="38" width="82" height="44" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.4"/>
+            <text x="153" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#1D4ED8" font-family="Nunito,sans-serif">ACTION</text>
+            <text x="153" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#1E3A8A" font-family="Nunito,sans-serif">Sheets</text>
+            <text x="153" y="79" text-anchor="middle" font-size="8" fill="#1D4ED8" font-family="Nunito,sans-serif">Read tasks</text>
+            <line x1="194" y1="60" x2="214" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w3)"/>
+            <rect x="216" y="38" width="76" height="44" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.4"/>
+            <text x="254" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#15803D" font-family="Nunito,sans-serif">ACTION</text>
+            <text x="254" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#14532D" font-family="Nunito,sans-serif">WhatsApp</text>
+            <text x="254" y="79" text-anchor="middle" font-size="8" fill="#15803D" font-family="Nunito,sans-serif">Weekly digest</text>
+          </svg>
+        </div>
+        <div class="wf-info">
+          <h4>Weekly task digest → WhatsApp</h4>
+          <p>Every Monday at 9am, n8n reads your task sheet and sends a WhatsApp summary. Never forget what's due.</p>
+          <span class="badge badge-teal" style="margin-top:10px;display:inline-block">Scheduled</span>
+        </div>
+      </div>
+
+      <!-- 4: RSS → Filter → Telegram -->
+      <div class="wf-card">
+        <div class="wf-diagram" style="background:#FDF4FF">
+          <svg viewBox="0 0 300 120" width="286" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="w4" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></marker></defs>
+            <rect x="8" y="38" width="82" height="44" rx="8" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.4"/>
+            <text x="49" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#0F766E" font-family="Nunito,sans-serif">TRIGGER</text>
+            <text x="49" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#134E4A" font-family="Nunito,sans-serif">RSS Feed</text>
+            <text x="49" y="79" text-anchor="middle" font-size="8" fill="#0F766E" font-family="Nunito,sans-serif">New job posted</text>
+            <line x1="90" y1="60" x2="110" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w4)"/>
+            <rect x="112" y="38" width="82" height="44" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+            <text x="153" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#92400E" font-family="Nunito,sans-serif">LOGIC</text>
+            <text x="153" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#78350F" font-family="Nunito,sans-serif">Filter</text>
+            <text x="153" y="79" text-anchor="middle" font-size="8" fill="#92400E" font-family="Nunito,sans-serif">Keyword match</text>
+            <line x1="194" y1="60" x2="214" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w4)"/>
+            <rect x="216" y="38" width="76" height="44" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.4"/>
+            <text x="254" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#5B21B6" font-family="Nunito,sans-serif">ACTION</text>
+            <text x="254" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#3B0764" font-family="Nunito,sans-serif">Telegram</text>
+            <text x="254" y="79" text-anchor="middle" font-size="8" fill="#5B21B6" font-family="Nunito,sans-serif">Alert me now</text>
+          </svg>
+        </div>
+        <div class="wf-info">
+          <h4>Job alert bot — RSS → Filter → Telegram</h4>
+          <p>Watches a job board. When a matching internship appears, you get an instant Telegram alert — before anyone else opens the site.</p>
+          <span class="badge badge-purple" style="margin-top:10px;display:inline-block">Career</span>
+        </div>
+      </div>
+
+      <!-- 5: Calendar → Set → WhatsApp -->
+      <div class="wf-card">
+        <div class="wf-diagram" style="background:#FFF9F0">
+          <svg viewBox="0 0 300 120" width="286" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="w5" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></marker></defs>
+            <rect x="8" y="38" width="82" height="44" rx="8" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.4"/>
+            <text x="49" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#0F766E" font-family="Nunito,sans-serif">TRIGGER</text>
+            <text x="49" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#134E4A" font-family="Nunito,sans-serif">Calendar</text>
+            <text x="49" y="79" text-anchor="middle" font-size="8" fill="#0F766E" font-family="Nunito,sans-serif">1 day before</text>
+            <line x1="90" y1="60" x2="110" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w5)"/>
+            <rect x="112" y="38" width="82" height="44" rx="8" fill="#FEF9C3" stroke="#CA8A04" stroke-width="1.4"/>
+            <text x="153" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#854D0E" font-family="Nunito,sans-serif">LOGIC</text>
+            <text x="153" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#713F12" font-family="Nunito,sans-serif">Set node</text>
+            <text x="153" y="79" text-anchor="middle" font-size="8" fill="#854D0E" font-family="Nunito,sans-serif">Format message</text>
+            <line x1="194" y1="60" x2="214" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w5)"/>
+            <rect x="216" y="38" width="76" height="44" rx="8" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.4"/>
+            <text x="254" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#15803D" font-family="Nunito,sans-serif">ACTION</text>
+            <text x="254" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#14532D" font-family="Nunito,sans-serif">WhatsApp</text>
+            <text x="254" y="79" text-anchor="middle" font-size="8" fill="#15803D" font-family="Nunito,sans-serif">"Due tomorrow!"</text>
+          </svg>
+        </div>
+        <div class="wf-info">
+          <h4>Assignment reminder — Calendar → WhatsApp</h4>
+          <p>Checks your Google Calendar. If a deadline is tomorrow, sends a WhatsApp reminder. Never miss a submission.</p>
+          <span class="badge badge-amber" style="margin-top:10px;display:inline-block">Student life</span>
+        </div>
+      </div>
+
+      <!-- 6: Webhook → Notion + Sheets -->
+      <div class="wf-card">
+        <div class="wf-diagram" style="background:#F0F9FF">
+          <svg viewBox="0 0 300 120" width="286" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="w6" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/></marker></defs>
+            <rect x="8" y="38" width="80" height="44" rx="8" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.4"/>
+            <text x="48" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#0F766E" font-family="Nunito,sans-serif">TRIGGER</text>
+            <text x="48" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="#134E4A" font-family="Nunito,sans-serif">Webhook</text>
+            <text x="48" y="79" text-anchor="middle" font-size="8" fill="#0F766E" font-family="Nunito,sans-serif">Bookmark saved</text>
+            <line x1="88" y1="60" x2="108" y2="60" stroke="#94A3B8" stroke-width="1.4" marker-end="url(#w6)"/>
+            <line x1="172" y1="48" x2="196" y2="32" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#w6)"/>
+            <line x1="172" y1="72" x2="196" y2="88" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#w6)"/>
+            <rect x="110" y="38" width="62" height="44" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="1.4"/>
+            <text x="141" y="55" text-anchor="middle" font-size="7.5" font-weight="700" fill="#92400E" font-family="Nunito,sans-serif">LOGIC</text>
+            <text x="141" y="68" text-anchor="middle" font-size="9" font-weight="700" fill="#78350F" font-family="Nunito,sans-serif">Set</text>
+            <text x="141" y="79" text-anchor="middle" font-size="7.5" fill="#92400E" font-family="Nunito,sans-serif">Add tags</text>
+            <rect x="198" y="18" width="90" height="28" rx="7" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.2"/>
+            <text x="243" y="30" text-anchor="middle" font-size="8" font-weight="700" fill="#3B0764" font-family="Nunito,sans-serif">Notion</text>
+            <text x="243" y="41" text-anchor="middle" font-size="7.5" fill="#5B21B6" font-family="Nunito,sans-serif">Add to database</text>
+            <rect x="198" y="74" width="90" height="28" rx="7" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.2"/>
+            <text x="243" y="86" text-anchor="middle" font-size="8" font-weight="700" fill="#1E3A8A" font-family="Nunito,sans-serif">Sheets</text>
+            <text x="243" y="97" text-anchor="middle" font-size="7.5" fill="#1D4ED8" font-family="Nunito,sans-serif">Log with tags</text>
+          </svg>
+        </div>
+        <div class="wf-info">
+          <h4>Bookmark → Notion + Google Sheets</h4>
+          <p>Save any bookmark and n8n logs it to both Notion and a spreadsheet, tagged automatically. Your knowledge base builds itself.</p>
+          <span class="badge badge-purple" style="margin-top:10px;display:inline-block">Productivity</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <div><span class="pn-label">Previous</span><a href="n8n.html">← Intro to n8n</a></div>
+  <div style="text-align:right"><span class="pn-label">Next</span><a href="quiz.html">Take the quiz →</a></div>
+</div>
+<footer><p>n8n Automation Workshop</p><a href="https://n8n.io" target="_blank">n8n.io →</a></footer>
+<script src="../js/nav.js"></script>
+</body>
+</html>

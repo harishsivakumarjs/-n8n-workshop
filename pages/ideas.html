@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Wall of Ideas — n8n Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../css/style.css"/>
+<style>
+.wall-layout{display:grid;grid-template-columns:380px 1fr;gap:40px;margin-top:44px;align-items:start}
+.wall-form{background:#fff;border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 2px 12px var(--shadow)}
+.wall-form h3{font-family:'Lora',serif;font-size:20px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.wall-form p{font-size:13px;color:var(--ink3);margin-bottom:22px;line-height:1.6}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+.fg input,.fg textarea{width:100%;background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;resize:none}
+.fg input:focus,.fg textarea:focus{border-color:var(--teal);background:#fff}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--ink3)}
+.fg select{width:100%;background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--ink);outline:none;appearance:none;cursor:pointer}
+.fg select:focus{border-color:var(--teal);background:#fff}
+
+.wall-submit{width:100%;background:var(--teal);color:#fff;font-family:'Nunito',sans-serif;font-weight:600;font-size:15px;padding:13px;border-radius:100px;border:none;cursor:pointer;transition:all .2s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
+.wall-submit:hover:not(:disabled){background:var(--tealD);transform:translateY(-1px)}
+.wall-submit:disabled{opacity:.65;cursor:not-allowed;transform:none}
+
+.status-msg{font-size:13px;text-align:center;margin-top:10px;min-height:20px;transition:all .3s;border-radius:8px;padding:0}
+.status-msg.success{background:var(--tealL);color:var(--tealD);padding:8px 14px}
+.status-msg.error{background:#FEF2F2;color:#B91C1C;padding:8px 14px}
+
+.wall-right h3{font-family:'Lora',serif;font-size:20px;font-weight:500;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.live-pill{background:var(--tealL);color:var(--tealD);font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px}
+.wall-right .wr-sub{font-size:13px;color:var(--ink3);margin-bottom:18px}
+
+.ideas-list{display:flex;flex-direction:column;gap:10px;max-height:520px;overflow-y:auto;padding-right:4px}
+.idea-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;animation:slideIn .35s ease forwards;opacity:0}
+@keyframes slideIn{to{opacity:1;transform:translateY(0)}from{opacity:0;transform:translateY(10px)}}
+.ic-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px;flex-wrap:wrap}
+.ic-name{font-size:12px;font-weight:700;color:var(--teal)}
+.ic-meta{display:flex;align-items:center;gap:6px}
+.ic-tag{font-size:10px;font-weight:600;background:var(--paper);border:1px solid var(--border);color:var(--ink3);padding:2px 8px;border-radius:100px}
+.ic-time{font-size:10px;color:var(--ink3)}
+.ic-text{font-size:13px;color:var(--ink);line-height:1.55}
+
+.loading-state{display:flex;align-items:center;gap:10px;padding:20px 0;font-size:13px;color:var(--ink3)}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.empty-state{text-align:center;padding:32px 20px;color:var(--ink3)}
+.empty-state .es-icon{font-size:32px;margin-bottom:10px}
+.empty-state p{font-size:14px}
+
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.res-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;text-decoration:none;display:block;transition:all .22s}
+.res-card:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow)}
+.rc-emoji{font-size:26px;margin-bottom:12px}
+.rc-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.rc-body{font-size:13px;color:var(--ink3);line-height:1.55}
+.rc-link{font-size:12px;color:var(--teal);font-weight:700;margin-top:10px;display:inline-block}
+@media(max-width:800px){.wall-layout,.res-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.res-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand"><span class="brand-pill">n8n</span><span class="brand-name">Automation Workshop</span></a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-a">Home</a>
+    <a href="automation.html" class="nav-a">Automation</a>
+    <a href="n8n.html" class="nav-a">n8n</a>
+    <a href="workflows.html" class="nav-a">Workflows</a>
+    <a href="quiz.html" class="nav-a">Quiz</a>
+    <a href="ideas.html" class="nav-a">Ideas</a>
+    <a href="https://n8n.io" target="_blank" class="nav-cta">Open n8n →</a>
+  </div>
+</nav>
+
+<div class="page-banner">
+  <div class="eyebrow">Community</div>
+  <h1>Wall of <em>Ideas</em></h1>
+  <p>What would you automate first? Submit your idea — it saves directly to Google Sheets and appears on the wall for everyone in the room.</p>
+</div>
+
+<section>
+  <div class="container">
+    <div class="section-label">Share yours</div>
+    <h2 class="section-title">What's your automation idea?</h2>
+    <p class="section-sub">Pick one repetitive task from your student life — something small. The best automations always start simple.</p>
+
+    <div class="wall-layout">
+
+      <!-- FORM -->
+      <div class="wall-form">
+        <h3>Drop your idea ↓</h3>
+        <p>Your idea saves directly to Google Sheets. No n8n, no middleman — just a direct API call from this form to the sheet.</p>
+
+        <div class="fg">
+          <label>Your name</label>
+          <input type="text" id="wname" placeholder="e.g. Priya S." maxlength="40"/>
+        </div>
+        <div class="fg">
+          <label>Your automation idea</label>
+          <textarea id="widea" rows="3" placeholder="e.g. WhatsApp reminder 30 min before every class"></textarea>
+        </div>
+        <div class="fg">
+          <label>Category</label>
+          <select id="wtag">
+            <option value="Study">📚 Study</option>
+            <option value="Career">💼 Career</option>
+            <option value="Health">💪 Health</option>
+            <option value="Social">📱 Social</option>
+            <option value="Productivity">⚡ Productivity</option>
+            <option value="Finance">💰 Finance</option>
+            <option value="Other">✨ Other</option>
+          </select>
+        </div>
+
+        <button class="wall-submit" id="submitBtn" onclick="submitIdea()">
+          <span id="btnText">Submit my idea →</span>
+        </button>
+        <div class="status-msg" id="statusMsg"></div>
+      </div>
+
+      <!-- LIVE WALL -->
+      <div class="wall-right">
+        <h3>
+          Ideas from the room
+          <span class="live-pill" id="icount">Loading...</span>
+          <button onclick="loadIdeas()" style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--teal);font-family:'Nunito',sans-serif;font-weight:600;padding:0">↻ Refresh</button>
+        </h3>
+        <p class="wr-sub">Submissions are stored in Google Sheets and loaded live from there every time the page opens.</p>
+        <div class="ideas-list" id="ideasList">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            Loading ideas from Google Sheets...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--paper)">
+  <div class="container">
+    <div class="section-label">Keep going</div>
+    <h2 class="section-title">Resources to take home</h2>
+    <p class="section-sub">Everything you need to keep building after today.</p>
+    <div class="res-grid">
+      <a href="https://n8n.io" target="_blank" class="res-card">
+        <div class="rc-emoji">🌐</div><div class="rc-title">n8n.io</div>
+        <div class="rc-body">Sign up free. Cloud version, ready in 60 seconds. No credit card, no download needed.</div>
+        <span class="rc-link">Visit n8n.io →</span>
+      </a>
+      <a href="https://docs.n8n.io" target="_blank" class="res-card">
+        <div class="rc-emoji">📖</div><div class="rc-title">Official docs</div>
+        <div class="rc-body">Every node explained with examples. Plus 500+ ready-made templates to import and customise.</div>
+        <span class="rc-link">docs.n8n.io →</span>
+      </a>
+      <a href="https://www.youtube.com/@n8n-io" target="_blank" class="res-card">
+        <div class="rc-emoji">🎥</div><div class="rc-title">YouTube channel</div>
+        <div class="rc-body">Visual, step-by-step tutorials for every level. Start with the beginner crash course playlist.</div>
+        <span class="rc-link">@n8n-io →</span>
+      </a>
+      <a href="https://community.n8n.io" target="_blank" class="res-card">
+        <div class="rc-emoji">💬</div><div class="rc-title">Community forum</div>
+        <div class="rc-body">30,000+ members. Paste your workflow, ask anything, share what you've built.</div>
+        <span class="rc-link">community.n8n.io →</span>
+      </a>
+      <a href="https://n8n.io/workflows" target="_blank" class="res-card">
+        <div class="rc-emoji">⚡</div><div class="rc-title">Workflow templates</div>
+        <div class="rc-body">500+ pre-built workflows. Find one close to your idea, import it, and customise the details.</div>
+        <span class="rc-link">Browse templates →</span>
+      </a>
+      <a href="../index.html" class="res-card">
+        <div class="rc-emoji">🔁</div><div class="rc-title">Back to start</div>
+        <div class="rc-body">Revisit any page from today's workshop — the concepts, node types, workflow diagrams, or quiz.</div>
+        <span class="rc-link">Home →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <div><span class="pn-label">Previous</span><a href="quiz.html">← Quiz</a></div>
+  <div style="text-align:right"><span class="pn-label">Start over</span><a href="../index.html">Home →</a></div>
+</div>
+
+<footer><p>n8n Automation Workshop</p><a href="https://n8n.io" target="_blank">n8n.io →</a></footer>
+<script src="../js/nav.js"></script>
+
+<script>
+/* ─── Load ideas from Google Sheets via Vercel API ─── */
+async function loadIdeas() {
+  const list = document.getElementById('ideasList');
+  const count = document.getElementById('icount');
+  list.innerHTML = '<div class="loading-state"><div class="spinner"></div>Loading from Google Sheets...</div>';
+
+  try {
+    const res = await fetch('/api/ideas');
+    if (!res.ok) throw new Error('Server error ' + res.status);
+    const data = await res.json();
+
+    if (!data.ideas || data.ideas.length === 0) {
+      list.innerHTML = '<div class="empty-state"><div class="es-icon">💡</div><p>No ideas yet — be the first to submit one!</p></div>';
+      count.textContent = '0 ideas';
+      return;
+    }
+
+    count.textContent = data.ideas.length + ' idea' + (data.ideas.length === 1 ? '' : 's');
+    list.innerHTML = '';
+
+    data.ideas.forEach((idea, i) => {
+      const card = document.createElement('div');
+      card.className = 'idea-card';
+      card.style.animationDelay = (i * 50) + 'ms';
+      card.innerHTML = `
+        <div class="ic-top">
+          <span class="ic-name">${escHtml(idea.name)}</span>
+          <div class="ic-meta">
+            <span class="ic-tag">${escHtml(idea.tag)}</span>
+            ${idea.timestamp ? `<span class="ic-time">${escHtml(idea.timestamp)}</span>` : ''}
+          </div>
+        </div>
+        <div class="ic-text">${escHtml(idea.idea)}</div>`;
+      list.appendChild(card);
+    });
+  } catch (err) {
+    list.innerHTML = `<div class="empty-state"><div class="es-icon">⚠️</div><p>Could not load ideas right now.<br><small style="color:var(--ink3)">${err.message}</small></p></div>`;
+    count.textContent = '—';
+  }
+}
+
+/* ─── Submit idea to Vercel API → Google Sheets ─── */
+async function submitIdea() {
+  const name = document.getElementById('wname').value.trim();
+  const idea = document.getElementById('widea').value.trim();
+  const tag  = document.getElementById('wtag').value;
+  const btn  = document.getElementById('submitBtn');
+  const txt  = document.getElementById('btnText');
+  const msg  = document.getElementById('statusMsg');
+
+  msg.className = 'status-msg';
+  msg.textContent = '';
+
+  if (!name) { showStatus('error', 'Please enter your name.'); return; }
+  if (!idea)  { showStatus('error', 'Please write your automation idea.'); return; }
+  if (idea.length < 10) { showStatus('error', 'Add a bit more detail to your idea!'); return; }
+
+  btn.disabled = true;
+  txt.textContent = 'Saving to Google Sheets...';
+
+  try {
+    const res = await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, idea, tag }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Server error');
+
+    showStatus('success', '✓ Saved to Google Sheets! Refreshing the wall...');
+    document.getElementById('wname').value = '';
+    document.getElementById('widea').value = '';
+    document.getElementById('wtag').selectedIndex = 0;
+
+    setTimeout(() => loadIdeas(), 1200);
+
+  } catch (err) {
+    showStatus('error', '✗ ' + err.message);
+  } finally {
+    btn.disabled = false;
+    txt.textContent = 'Submit my idea →';
+  }
+}
+
+function showStatus(type, text) {
+  const msg = document.getElementById('statusMsg');
+  msg.className = 'status-msg ' + type;
+  msg.textContent = text;
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+/* Allow Enter in name field to jump to idea textarea */
+document.getElementById('wname').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('widea').focus(); }
+});
+
+/* Load ideas on page open */
+loadIdeas();
+</script>
+</body>
+</html>
